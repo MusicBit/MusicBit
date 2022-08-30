@@ -1,0 +1,17 @@
+body {
+    background-color: rgb(128, 0, 32);
+}
+
+#mainHeader {
+    text-align: center;
+    margin-top: 300px;
+    font-weight: bolder;
+    font-size: 52px;
+    color: black;
+}
+
+#subtext {
+    text-align: center;
+    font-size: 32px;
+    color: black;
+}
