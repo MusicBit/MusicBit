@@ -10,7 +10,7 @@
                 <div class="email-input">
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>Username</mat-label>
-                        <input formControlName="email" matInput required />
+                        <input formControlName="username" matInput required />
                         <mat-error *ngIf="!loginForm.controls['username'].valid">
                             Required username
                         </mat-error>
@@ -20,7 +20,7 @@
                     
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>Password</mat-label>
-                        <input formControlName="password" matInput [type]="hide ? 'password' : 'text'" required />
+                        <input formControlName="password" [type]="hide ? 'password' : 'text'" matInput required />
                         <button mat-icon-button matSuffix (click)="hide = !hide"
                             [attr.aria-label]="'Hide Password'" [attr.aira-pressed]="hide">
                             <mat-icon> {{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
@@ -31,7 +31,7 @@
                     </mat-form-field>
                     <span class="aLink">Forgot Password</span>
                 </div>
-                <button mat-flat-button color="primary">Login</button>
+                <button mat-flat-button color="primary" [disabled]="!loginForm.valid" type="submit">Login</button>
             </form>
         </mat-card-content>
     </mat-card>
