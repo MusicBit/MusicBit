@@ -14,11 +14,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 //Components
 import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

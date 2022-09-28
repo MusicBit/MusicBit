@@ -1,0 +1,59 @@
+<h1>Welcome to MusicBit</h1>
+
+<div class="mainDiv">
+    <mat-card>
+        <mat-card-content>
+            <div class="header">
+                <h2>Please fill out the information for your account!</h2>
+            </div>
+            <form (ngSubmit)="onRegister()" name="registerForm" [formGroup]="registerForm">
+                <div class="firstNameDiv">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input formControlName="firstName" matInput required />
+                        <mat-error *ngIf="registerForm.controls['firstName'].valid">
+                            Required first name!
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="lastNameDiv">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input formControlName="lastName" matInput required />
+                        <mat-error *ngIf="registerForm.controls['lastName'].valid">
+                            Required last name!
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                
+                <div class="username">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Username</mat-label>
+                        <input formControlName="username" matInput required />
+                        <mat-error *ngIf="registerForm.controls['username'].valid">
+                            Required username
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input formControlName="password" [type]="hide ? 'password' : 'text'" matInput required />
+                        <button mat-icon-button matSuffix (click)="hide = !hide"
+                            [attr.aria-label]="'Hide Password'" [attr.aira-pressed]="hide">
+                            <mat-icon> {{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="!registerForm.controls['password'].valid">
+                            Required password
+                        </mat-error>
+                    </mat-form-field>
+                    
+                </div>
+                <button mat-flat-button color="primary" [disabled]="!registerForm.valid">Register!</button>
+                <a class="loginBTN" routerLink="">Login!</a>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
