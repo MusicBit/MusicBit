@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +12,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   hide: boolean = true;
-  constructor(private fb: FormBuilder, private router: Router) { }
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) { }
 
   ngOnInit(): void {
     
@@ -26,7 +28,18 @@ export class LoginComponent implements OnInit {
     if(!this.loginForm.valid) {
       return;
     }
-    console.log(this.loginForm.value)
-  }
+    const formData = this.loginForm.value;
+    console.log(formData);
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json; charset=UTF-8',
+      }),
+      responseType: "text" as const,
+    };
+    
+    this.http.post("https://www.musicbit.net/login.php", JSON.stringify({action: "login", user: formData.username, pass: formData.password}), httpOptions).subscribe(data => {
+      console.log(data);
+    });
+  }
 }
