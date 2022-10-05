@@ -5,13 +5,8 @@
   header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
   //not sure why this is necessary, something about how the data had to be passed
-  if (!isset($_SERVER["HTTP_HOST"])) {
-    parse_str($argv[1], $values);
-  }
-  else {
-    $json = file_get_contents('php://input');
-    $values = json_decode($json, true);
-  }
+  $json = file_get_contents('php://input');
+  $values = json_decode($json, true);
 
   if ($values["action"] == "register")  {
     $mysqli = new mysqli("localhost", "querydude", "mbcoreqdude", "mbcore");
