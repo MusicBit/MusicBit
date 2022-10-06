@@ -43,5 +43,5 @@
       else
         echo "Something went wrong, please contact the site administrator.";
   }
-  return 200;
+  exit;
 ?>
