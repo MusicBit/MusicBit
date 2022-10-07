@@ -50,9 +50,10 @@ export class LoginComponent implements OnInit {
         this.common.validateLogin((id: string) => {
           if (id == '-1')
             console.log("Failed to stay logged in.");
-          else
+          else {
             console.log("Logged in user: " + id);
             this.router.navigate(["home"]);
+          }
         });        
       }
       else //login failed
