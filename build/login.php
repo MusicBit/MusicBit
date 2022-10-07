@@ -61,8 +61,7 @@
         if(hash("sha512", $pass . $salt) == $hash) {
           //$_SESSION["loggedin"] = $user;        //this WOULD work on live, but for the sake of development it doesn't, it can't remotely create a session on the local browser
           //echo $_SESSION["loggedin"];
-          $token_salt = str_pad($id, 8, '0', STR_PAD_LEFT);
-          $token = hash("sha512", strtolower($user) . $token_salt) . $token_salt;
+          $token = hash("sha512", strtolower($user) . $id) . $id;
           echo "Login Successful.\n$token";
         }
         else
