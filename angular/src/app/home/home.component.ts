@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
 
 
   onLogout() {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; //clear login token
     this.router.navigate(['']);
   }
 }
