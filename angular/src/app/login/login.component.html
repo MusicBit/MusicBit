@@ -12,7 +12,7 @@
                         <mat-label>Username</mat-label>
                         <input formControlName="username" matInput required />
                         <mat-error *ngIf="!loginForm.controls['username'].valid">
-                            Required username
+                            Username must be between 6 and 20 characters.
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -26,7 +26,7 @@
                             <mat-icon> {{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
                         </button>
                         <mat-error *ngIf="!loginForm.controls['password'].valid">
-                            Required password
+                            Password must be between 8 and 20 characters.
                         </mat-error>
                     </mat-form-field>
                     <span class="aLink">Forgot Password</span>

@@ -11,8 +11,8 @@
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input formControlName="firstName" matInput required />
-                        <mat-error *ngIf="registerForm.controls['firstName'].valid">
-                            Required first name!
+                        <mat-error *ngIf="!registerForm.controls['firstName'].valid">
+                            First name must be between 1 and 20 characters.
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -21,8 +21,8 @@
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input formControlName="lastName" matInput required />
-                        <mat-error *ngIf="registerForm.controls['lastName'].valid">
-                            Required last name!
+                        <mat-error *ngIf="!registerForm.controls['lastName'].valid">
+                            Last name must be between 1 and 20 characters.
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -31,8 +31,8 @@
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>Username</mat-label>
                         <input formControlName="username" matInput required />
-                        <mat-error *ngIf="registerForm.controls['username'].valid">
-                            Required username
+                        <mat-error *ngIf="!registerForm.controls['username'].valid">
+                            Username must be between 6 and 20 characters.
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -46,7 +46,7 @@
                             <mat-icon> {{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
                         </button>
                         <mat-error *ngIf="!registerForm.controls['password'].valid">
-                            Required password
+                            Password must be at least 8 characters.
                         </mat-error>
                     </mat-form-field>
                     
