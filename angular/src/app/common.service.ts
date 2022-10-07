@@ -20,7 +20,7 @@ export class CommonService {
 
     let token = this.getToken();
     this.http.post("https://www.musicbit.net/login.php", JSON.stringify({action: "validate", token: token}), httpOptions).subscribe(data => {
-      callback(parseInt(data)); //userid of logged in user on success, -1 on failure
+      callback(data); //userid of logged in user on success, -1 on failure
     });
   }
 

@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit {
         document.cookie = "token=" + token;
 
         //syntax for using validateLogin, put login protected script or function call within the callback arrow funciton
-        this.common.validateLogin((id: number) => {
-          if (id == -1)
+        this.common.validateLogin((id: string) => {
+          if (id == '-1')
             console.log("Failed to stay logged in.");
           else
             console.log("Logged in user: " + id);
