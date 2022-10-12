@@ -33,10 +33,11 @@ def getRecommendation():
         topSongs = sp.current_user_top_tracks(time_range='medium_term',limit=50)
         randTopSong=topSongs['items'][random.randint(0,49)]
         print("Chosen seed:",randTopSong['name'],'by',randTopSong['artists'][0]['name'])
-        seedID=str(randTopSong['id'])
+        seedID={str(randTopSong['id'])}
     else:
-        seedID=blackList[len(blackList)-1]
-    recommendations = sp.recommendations(seed_tracks={seedID},limit=20,target_tempo=BPM,min_tempo=BPM-10,max_temp=BPM+10)
+        #seedID=blackList[len(blackList)-1]
+        seedID=blackList
+    recommendations = sp.recommendations(seed_tracks=seedID,limit=20,target_tempo=BPM,min_tempo=BPM-10,max_temp=BPM+10)
     recIDs=[]
     for x in range(20):
         recIDs.append(recommendations['tracks'][x]['id'])
