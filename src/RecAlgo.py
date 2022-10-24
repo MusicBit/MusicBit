@@ -12,8 +12,8 @@ BPM = 150
 # ----------------------------
 
 #These need to be replaced for others
-CLIENT_ID = ''
-CLIENT_SECRET = ''
+CLIENT_ID = 'd3d75abb54864740a404739fb0c5cec9'
+CLIENT_SECRET = 'fc5dc45681484c44a0da5ea512aa6358'
 
 #----------------------------------
 
@@ -34,10 +34,17 @@ def getRecommendation():
         randTopSong=topSongs['items'][random.randint(0,49)]
         print("Chosen seed:",randTopSong['name'],'by',randTopSong['artists'][0]['name'])
         seedID={str(randTopSong['id'])}
-    else:
+    if len(blackList)>0 and len(blackList)<6:
         #seedID=blackList[len(blackList)-1]
         seedID=blackList
-    recommendations = sp.recommendations(seed_tracks=seedID,limit=20,target_tempo=BPM,min_tempo=BPM-10,max_temp=BPM+10)
+    if len(blackList)>=6:
+        seedID.clear()
+        seedID.add(blackList[len(blackList)-1])
+        seedID.add(blackList[len(blackList)-2])
+        seedID.add(blackList[len(blackList)-3])
+        seedID.add(blackList[len(blackList)-4])
+        seedID.add(blackList[len(blackList)-5])
+    recommendations = sp.recommendations(seed_tracks=seedID,limit=20,target_tempo=BPM)
     recIDs=[]
     for x in range(20):
         recIDs.append(recommendations['tracks'][x]['id'])
@@ -93,7 +100,15 @@ def qNextSong(song,device):
     result=sp.add_to_queue(uri=song.uri,device_id=device)
 
 
-deviceID=getDevice()
+while True:
+    try:
+        deviceID=getDevice()
+        if deviceID:
+            break
+    except:
+        print('device not found')
+        time.sleep(10)
+
 print('Device Found:',deviceID)
 songToPlay=getRecommendation()
 playSong(songToPlay,deviceID)
@@ -101,7 +116,7 @@ flag=False
 curentLoop=1
 while True:
     timeRemaining=nextCheck()
-    if timeRemaining<=30000 and flag==False:
+    if timeRemaining<=60000 and flag==False:
         try:
             flag=True
             BPM=random.randint(80,170) ##USED FOR TESTING REMOVE LATER
@@ -112,10 +127,13 @@ while True:
             if curentLoop>20:
                 blackList.remove(blackList[0])
                 print('song removed from blacklist')
+            continue
         except:
             print('Error Caught')
-    if timeRemaining>30000:
+            flag=False
+            continue
+    if timeRemaining>60000:
         flag=False
-        time.sleep(25)
+        time.sleep(20)
     else:
-        time.sleep(25)
+        time.sleep(20)
