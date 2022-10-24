@@ -28,10 +28,16 @@ export class HomeComponent implements OnInit {
   //got popup to open to connect spotify account, but dont know how to save token or close popup --Tyree
   //https://leemartin.dev/creating-a-simple-spotify-authorization-popup-in-javascript-7202ce86a02f, following this guide but function calls is weird and just JS
   onSpotifyLogin() {
-    let popup = window.open(`${this.spotifyAuthEndpoint}?client_id=${this.clientID}&redirect_uri=${this.redirectURL}&scope=${this.scopes}&response_type=token&show_dialog=true`,
-     'Login With Spotify', 'width=800,height=600')
-
       
+    
+    window.location.href = `${this.spotifyAuthEndpoint}?client_id=${this.clientID}&redirect_uri=${this.redirectURL}&scope=${this.scopes}&response_type=token&show_dialog=true`;
+    let code = null;
+    let queryString = window.location.search;
+    if(queryString.length > 0) {
+        const urlParams = new URLSearchParams(queryString);
+        code = urlParams.get("code");
+        console.log(code);
+    }
   }
 
 }
