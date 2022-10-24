@@ -12,8 +12,8 @@ BPM = 150
 # ----------------------------
 
 #These need to be replaced for others
-CLIENT_ID = 'd3d75abb54864740a404739fb0c5cec9'
-CLIENT_SECRET = 'fc5dc45681484c44a0da5ea512aa6358'
+CLIENT_ID = ''
+CLIENT_SECRET = ''
 
 #----------------------------------
 
