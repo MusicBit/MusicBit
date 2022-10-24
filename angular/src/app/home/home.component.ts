@@ -11,14 +11,12 @@ export class HomeComponent implements OnInit {
   clientID = "78151092cffd4fc18f99577b2a43cc65";
   spotifyAuthEndpoint = "https://accounts.spotify.com/authorize";
   redirectURL = "http://localhost:4200/home";
-  clientSecret = "bcd3a90646574005aef67e13fd575cf6";
   scopes = "user-top-read";
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
-
 
   onLogout() {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; //clear login token
@@ -29,7 +27,6 @@ export class HomeComponent implements OnInit {
   //https://leemartin.dev/creating-a-simple-spotify-authorization-popup-in-javascript-7202ce86a02f, following this guide but function calls is weird and just JS
   onSpotifyLogin() {
       
-    
     window.location.href = `${this.spotifyAuthEndpoint}?client_id=${this.clientID}&redirect_uri=${this.redirectURL}&scope=${this.scopes}&response_type=token&show_dialog=true`;
     let code = null;
     let queryString = window.location.search;

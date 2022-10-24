@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
     password : ['',[Validators.required, Validators.minLength(8), Validators.maxLength(20)]]
   }
   )
-
   onLogin() {
     if(!this.loginForm.valid) {
       return;
