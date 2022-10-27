@@ -38,7 +38,7 @@ def getRecommendation():
         #seedID=blackList[len(blackList)-1]
         seedID=blackList
     if len(blackList)>=6:
-        seedID.clear()
+        seedID=[]
         seedID.add(blackList[len(blackList)-1])
         seedID.add(blackList[len(blackList)-2])
         seedID.add(blackList[len(blackList)-3])
