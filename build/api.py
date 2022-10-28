@@ -38,4 +38,4 @@ api.add_resource(test, '/test')
 if __name__ == '__main__':
 	# This prints an error on every run of the flask server - Production use is intended to be done through something like waitress
 	# - For now, we just want to make sure this is working.
-	app.run(host='0.0.0.0', port=8080)
+	app.run(port=8080)
