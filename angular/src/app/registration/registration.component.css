@@ -33,6 +33,9 @@ mat-card {
     width: 80%;
 }
 
+.title {
+    margin-top: -100px;
+}
 
 .username{
     padding-top: 10px;
@@ -51,4 +54,5 @@ mat-card {
 }
 a, a:visited, a:hover, a:active {
     color: inherit;
+    text-decoration: underline;
 }

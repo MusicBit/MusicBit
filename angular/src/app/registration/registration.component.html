@@ -1,4 +1,4 @@
-<h1>Welcome to MusicBit</h1>
+<h1 class="title">Welcome to MusicBit</h1>
 
 <div class="mainDiv">
     <mat-card>
@@ -37,7 +37,6 @@
                     </mat-form-field>
                 </div>
                 <div>
-                    
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>Password</mat-label>
                         <input formControlName="password" [type]="hide ? 'password' : 'text'" matInput required />
@@ -51,6 +50,16 @@
                     </mat-form-field>
                     
                 </div>
+                <div class="fitBit">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>FitBit Token</mat-label>
+                        <input formControlName="fitbitToken" matInput required />
+                        <mat-error *ngIf="!registerForm.controls['fitbitToken'].valid">
+                            FitBit token must be present
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <a (click)="fitbitTutorial()">Click for Fitbit Access Token Tutorial!</a><br><br>
                 <button mat-flat-button color="primary" [disabled]="!registerForm.valid">Register!</button>
                 <a class="loginBTN" routerLink="">Login!</a>
             </form>
