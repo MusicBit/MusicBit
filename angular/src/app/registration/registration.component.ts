@@ -47,4 +47,8 @@ export class RegistrationComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  fitbitTutorial() {
+    window.open("https://drive.google.com/file/d/1obYDSvvzVhM9ufKRQ5EPXH7u0UR08J7O/view?usp=sharing", "_blank");
+  }
+
 }
