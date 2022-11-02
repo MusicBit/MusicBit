@@ -3,7 +3,6 @@
   header('Access-Control-Allow-Origin: *'); 
   header("Access-Control-Allow-Methods: POST");
   header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
-
   
   ini_set('display_errors', 'on'); 
   error_reporting(E_ALL); 
