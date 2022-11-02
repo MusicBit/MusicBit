@@ -1,10 +1,10 @@
-<<<<<<< Updated upstream
-=======
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 
->>>>>>> Stashed changes
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+import * as qs from "qs";
 
 @Component({
   selector: 'app-home',
@@ -13,11 +13,6 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-<<<<<<< Updated upstream
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
-=======
   clientID = "78151092cffd4fc18f99577b2a43cc65";
   spotifyAuthEndpoint = "https://accounts.spotify.com/authorize/";
   redirectURL = window.location.href;
@@ -45,7 +40,6 @@ export class HomeComponent implements OnInit {
     window.onSpotifyWebPlaybackSDKReady = () => {
       this.initPlayer();
     };
->>>>>>> Stashed changes
   }
 
 
@@ -54,9 +48,6 @@ export class HomeComponent implements OnInit {
     this.spotifyButtonVisible = true;
     this.router.navigate(['']);
   }
-<<<<<<< Updated upstream
-}
-=======
 
   //got popup to open to connect spotify account, but dont know how to save token or close popup --Tyree
   //https://leemartin.dev/creating-a-simple-spotify-authorization-popup-in-javascript-7202ce86a02f, following this guide but function calls is weird and just JS
@@ -153,4 +144,3 @@ export class HomeComponent implements OnInit {
     return "";
   }
 }
->>>>>>> Stashed changes
