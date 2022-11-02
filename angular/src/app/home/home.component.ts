@@ -4,7 +4,19 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import { CommonService } from '../common.service';
 import * as qs from "qs";
+import fetch from 'node-fetch';
+
+type HeartRate = {
+  time: string;
+  value: number;
+}
+
+type GetUserResponse = {
+  dataset: HeartRate[];
+}
+
 
 @Component({
   selector: 'app-home',
@@ -21,8 +33,9 @@ export class HomeComponent implements OnInit {
   player!: Spotify.Player;
   deviceID = "-1";
   spotifyButtonVisible = true;
+  heartRate = 0;
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(private router: Router, private http: HttpClient, private common: CommonService) { }
 
   ngOnInit(): void {
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -40,6 +53,43 @@ export class HomeComponent implements OnInit {
     window.onSpotifyWebPlaybackSDKReady = () => {
       this.initPlayer();
     };
+  }
+
+  async getHeartRate() {
+    let client_id = '';
+    let access_token = '';
+    let userId = '';
+
+    this.common.validateLogin( async (id: string) => {userId = id;
+      this.http.post("https://www.musicbit.net/fitbit.php", {action: "get_fb", user_id: userId}, {responseType: 'text'}).subscribe(async data => {
+        let strData = data.toString();
+        let d = strData.split(":");
+        access_token = d[0];
+        client_id = d[1];
+
+        try {
+          const response = await fetch('https://api.fitbit.com/1/user/' + client_id + '/activities/heart/date/today/1d/1min.json', {
+            method: 'GET',
+            headers: {
+              Authorization: 'Bearer ' + access_token,
+            },
+          });
+    
+          if(!response.ok) {
+            throw new Error();
+          }
+
+          const result: any = (await response.json()) as {
+            activity: null;
+            activityIntraday: GetUserResponse;
+          }
+
+          this.heartRate = result['activities-heart-intraday'].dataset[result['activities-heart-intraday'].dataset.length -1].value;
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    });
   }
 
 

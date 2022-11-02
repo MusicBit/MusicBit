@@ -18,11 +18,8 @@
     $lname = $mysqli->real_escape_string($values["lname"]);
     $user = $mysqli->real_escape_string($values["user"]);
     $pass = $mysqli->real_escape_string($values["pass"]);
-<<<<<<< Updated upstream
-=======
     $fitbit_token = $mysqli->real_escape_string($values["fitbit_token"]);
     $fitbit_id = $mysqli->real_escape_string($values["fitbit_id"]);
->>>>>>> Stashed changes
 
     //salt and hash help taken from https://stackoverflow.com/a/3273392
     $salt = str_pad((string) rand(1, 1000), 4, '0', STR_PAD_LEFT);
@@ -39,11 +36,7 @@
           $unique = true;
           $id = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 8); //generate random 8 character alphanumeric userid
           try {
-<<<<<<< Updated upstream
-            $mysqli->query("INSERT INTO userauth (fname, lname, user, pass, userid) VALUES ('$fname', '$lname', '$user', '$hashed_pass', '$id')");
-=======
             $mysqli->query("INSERT INTO userauth (fname, lname, user, pass, userid, fitbit_token, client_id) VALUES ('$fname', '$lname', '$user', '$hashed_pass', '$id', '$fitbit_token', '$fitbit_id')");
->>>>>>> Stashed changes
           }
           catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) { //duplicate userid
