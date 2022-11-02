@@ -21,7 +21,13 @@ export class RegistrationComponent implements OnInit {
     firstName : ['',[Validators.required, Validators.maxLength(20)]],
     lastName : ['',[Validators.required, Validators.maxLength(20)]],
     username : ['',[Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+<<<<<<< Updated upstream
     password : ['',[Validators.required, Validators.minLength(8)]]
+=======
+    password : ['',[Validators.required, Validators.minLength(8)]],
+    fitbitToken : ['', [Validators.required]],
+    fitbit_id: ['', [Validators.required]]
+>>>>>>> Stashed changes
   })
 
   onRegister() {
@@ -38,7 +44,11 @@ export class RegistrationComponent implements OnInit {
       responseType: "text" as const,
     };
 
+<<<<<<< Updated upstream
     this.http.post("https://www.musicbit.net/register.php", JSON.stringify({action: "register", fname: formData.firstName, lname: formData.lastName, user: formData.username, pass: formData.password}), httpOptions).subscribe(data => {
+=======
+    this.http.post("https://www.musicbit.net/register.php", JSON.stringify({action: "register", fname: formData.firstName, lname: formData.lastName, user: formData.username, pass: formData.password, fitbit_token: formData.fitbitToken, fitbit_id: formData.fitbit_id}), httpOptions).subscribe(data => {
+>>>>>>> Stashed changes
       console.log(data);
     });
 
