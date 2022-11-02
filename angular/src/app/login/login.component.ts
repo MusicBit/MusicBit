@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
             console.log("Failed to stay logged in.");
           else {
             console.log("Logged in user: " + id);
+            this.router.navigate(["home"]);
           }
         });        
       }
