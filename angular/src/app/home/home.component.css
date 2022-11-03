@@ -7,7 +7,43 @@
     align-items: center;
 }
 
-.spotifyContainer {
-    padding: 50px;
+.title {
+    color: white;
 }
 
+.mainHeader {
+    text-align: center;
+    position: relative;
+    padding: 650px;
+    color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 50px;
+}
+
+.spotifyButton {
+    background-color: green;
+}
+.logoutButton {
+    background-color: red;
+    margin-left: 10px;
+}
+
+.bpmLabel {
+    color: black;
+    font-size: 30px;
+    position: absolute;
+    top: 150px;
+}
+.bpmSlider {
+    width: 300px;
+    color: black;
+    position: absolute;
+    top: 100px;
+}
+.heartrateLabel {
+    color: black;
+    font-size: 30px;
+    position: absolute;
+    top: 200px;
+    left: 870px;
+}

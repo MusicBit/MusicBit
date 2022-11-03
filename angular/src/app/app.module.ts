@@ -10,6 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule }  from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatSliderModule} from '@angular/material/slider';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -34,6 +36,8 @@ import { HomeComponent } from './home/home.component';
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatToolbarModule,
+    MatSliderModule,
     HttpClientModule
   ],
   providers: [],

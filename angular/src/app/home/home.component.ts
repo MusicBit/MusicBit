@@ -7,6 +7,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { CommonService } from '../common.service';
 import * as qs from "qs";
 import fetch from 'node-fetch';
+import { MatSliderChange } from '@angular/material/slider';
 
 type HeartRate = {
   time: string;
@@ -25,7 +26,7 @@ type GetUserResponse = {
 })
 export class HomeComponent implements OnInit {
 
-  clientID = "78151092cffd4fc18f99577b2a43cc65";
+  clientID = "611286f87c6a497aa03880a782ffc282";
   spotifyAuthEndpoint = "https://accounts.spotify.com/authorize/";
   redirectURL = window.location.href;
   scopes = "streaming%20user-modify-playback-state%20user-read-email%20user-read-private%20user-top-read";
@@ -34,10 +35,23 @@ export class HomeComponent implements OnInit {
   deviceID = "-1";
   spotifyButtonVisible = true;
   heartRate = 0;
+  userName = '';
+  desiredHeartRate = 0;
 
-  constructor(private router: Router, private http: HttpClient, private common: CommonService) { }
+  constructor(private router: Router, private http: HttpClient, private common: CommonService) {
+    if(localStorage.getItem("userName") == null) { 
+      this.userName = this.router.getCurrentNavigation()?.extras?.state?.['userName'];
+      localStorage.setItem("userName", this.userName);
+    }
+  }
 
   ngOnInit(): void {
+    if(localStorage.getItem("userName") != null) {
+      let user = localStorage.getItem("userName");
+      console.log(user);
+      this.userName = user?.toString()!;
+    }
+    
     const urlSearchParams = new URLSearchParams(window.location.search);
     let code = urlSearchParams.get("code");
     if (code) {
@@ -95,7 +109,12 @@ export class HomeComponent implements OnInit {
 
   onLogout() {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; //clear login token
+    if(this.player) {
+      this.player.disconnect();
+    }
     this.spotifyButtonVisible = true;
+    this.userName = '';
+    localStorage.removeItem(this.userName);
     this.router.navigate(['']);
   }
 
@@ -115,7 +134,7 @@ export class HomeComponent implements OnInit {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/x-www-form-urlencoded',
-          'Authorization': 'Basic NzgxNTEwOTJjZmZkNGZjMThmOTk1NzdiMmE0M2NjNjU6OThhOWZmZTUxMmM4NGJhNmFlNDZlYTg4YzY0OTQ0ZTU=' //encoded client id and secret
+          'Authorization': 'Basic NjExMjg2Zjg3YzZhNDk3YWEwMzg4MGE3ODJmZmMyODI6ZTkyNmZjYmU4NzYwNDMzMGE3YmUyMzNhNGQzY2NkY2Q=' //encoded client id and secret
         }),
       };
       this.http.post<any>("https://accounts.spotify.com/api/token", qs.stringify({grant_type: 'authorization_code', code: payload, redirect_uri: this.redirectURL}), httpOptions).subscribe(data => {
@@ -124,12 +143,12 @@ export class HomeComponent implements OnInit {
         this.initPlayer();
       });
     }
-    this.spotifyButtonVisible = false;
 
   }
 
   initPlayer() {
     if (this.token) {
+      this.spotifyButtonVisible = false;
       this.player = new Spotify.Player({
         name: 'MusicBit Player',
         getOAuthToken: cb => { cb(this.token); },
@@ -175,7 +194,13 @@ export class HomeComponent implements OnInit {
   }
 
   activateDevice() {
-    this.http.put("https://api.spotify.com/v1/me/player", qs.stringify({device_ids: [`"${this.deviceID}"`], play: true})).subscribe();
+    const httpOptions = {
+      headers: new HttpHeaders({
+        //'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.token 
+      }),
+    };
+    this.http.put("https://api.spotify.com/v1/me/player", qs.stringify({device_ids: [`"${this.deviceID}"`], play: true}), httpOptions).subscribe();
   }
 
   getToken() {
@@ -192,5 +217,11 @@ export class HomeComponent implements OnInit {
       }
     }
     return "";
+  }
+
+  //desired heart rate value
+  onSliderChange(event : MatSliderChange) {
+    console.log(event.value);
+    this.desiredHeartRate = event.value!;
   }
 }
