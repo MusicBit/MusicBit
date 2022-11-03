@@ -12,7 +12,8 @@ import * as qs from "qs";
 })
 export class HomeComponent implements OnInit {
 
-  clientID = "78151092cffd4fc18f99577b2a43cc65";
+  //clientID = "78151092cffd4fc18f99577b2a43cc65";
+  clientID = "611286f87c6a497aa03880a782ffc282";
   spotifyAuthEndpoint = "https://accounts.spotify.com/authorize";
   redirectURL = window.location.href;
   scopes = "streaming%20user-modify-playback-state%20user-read-email%20user-read-private%20user-top-read";
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit {
     }
 
     this.token = this.getToken();
-
+    console.log(this.token);
     window.onSpotifyWebPlaybackSDKReady = () => {
       this.initPlayer();
     };
@@ -40,6 +41,9 @@ export class HomeComponent implements OnInit {
 
   onLogout() {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; //clear login token
+    if(this.player) {
+      this.player.disconnect();
+    }
     this.router.navigate(['']);
   }
 
@@ -59,7 +63,7 @@ export class HomeComponent implements OnInit {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/x-www-form-urlencoded',
-          'Authorization': 'Basic NzgxNTEwOTJjZmZkNGZjMThmOTk1NzdiMmE0M2NjNjU6OThhOWZmZTUxMmM4NGJhNmFlNDZlYTg4YzY0OTQ0ZTU=' //encoded client id and secret
+          'Authorization': 'Basic NjExMjg2Zjg3YzZhNDk3YWEwMzg4MGE3ODJmZmMyODI6ZTkyNmZjYmU4NzYwNDMzMGE3YmUyMzNhNGQzY2NkY2Q=' //encoded client id and secret
         }),
       };
       this.http.post<any>("https://accounts.spotify.com/api/token", qs.stringify({grant_type: 'authorization_code', code: payload, redirect_uri: this.redirectURL}), httpOptions).subscribe(data => {
@@ -117,7 +121,13 @@ export class HomeComponent implements OnInit {
   }
 
   activateDevice() {
-    this.http.put("https://api.spotify.com/v1/me/player", qs.stringify({device_ids: [`"${this.deviceID}"`], play: true})).subscribe();
+    const httpOptions = {
+      headers: new HttpHeaders({
+        //'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.token 
+      }),
+    };
+    this.http.put("https://api.spotify.com/v1/me/player", qs.stringify({device_ids: [`"${this.deviceID}"`], play: true}), httpOptions).subscribe();
   }
 
   getToken() {

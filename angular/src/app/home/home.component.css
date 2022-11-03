@@ -8,10 +8,16 @@
     
 }
 .title {
+    color: white;
+}
+
+.mainHeader {
+    text-align: center;
     position: relative;
-    top: -400px;
-    left: -400px;
-    text-decoration: underline;
+    padding: 650px;
+    color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 50px;
 }
 
 .spotifyContainer {
