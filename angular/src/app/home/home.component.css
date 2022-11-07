@@ -21,11 +21,27 @@
 }
 
 .spotifyButton {
-    background-color: green;
+  background-color: green;
+  vertical-align: middle;
+  position:fixed;
+  right:100px;
 }
 .logoutButton {
-    background-color: red;
-    margin-left: 10px;
+  background-color: red;
+  vertical-align: middle;
+  position: fixed;
+  right: 10px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.divider{
+    width:10px;
+    height:auto;
+    display:inline-block;
 }
 
 .bpmLabel {
