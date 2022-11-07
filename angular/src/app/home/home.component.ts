@@ -29,18 +29,24 @@ export class HomeComponent implements OnInit {
   clientID = "611286f87c6a497aa03880a782ffc282";
   spotifyAuthEndpoint = "https://accounts.spotify.com/authorize/";
   redirectURL = window.location.href;
-  scopes = "streaming%20user-modify-playback-state%20user-read-email%20user-read-private%20user-top-read";
+  scopes = "streaming%20user-modify-playback-state%20user-read-email%20user-read-private%20user-top-read%20user-read-currently-playing%20user-read-playback-state";
   token = "";
   player!: Spotify.Player;
   deviceID = "-1";
   spotifyButtonVisible = true;
+  spotifyPlayerVisible = false;
   heartRate = 0;
   userName = '';
   desiredHeartRate = 0;
+  songTitle = '';
+  songArtist = '';
+  songImage = ''
+
 
   constructor(private router: Router, private http: HttpClient, private common: CommonService) {
     if(localStorage.getItem("userName") == null) { 
       this.userName = this.router.getCurrentNavigation()?.extras?.state?.['userName'];
+      //USERNAME IS UNDEFINED FOR SOME LOGINS ON DIFFERENT MACHINES
       localStorage.setItem("userName", this.userName);
     }
   }
@@ -62,7 +68,7 @@ export class HomeComponent implements OnInit {
 
     this.token = this.getToken();
     // ------ testing purposes REMOVE BEFORE FINAL ---
-    //console.log(this.token);
+    console.log(this.token);
 
     window.onSpotifyWebPlaybackSDKReady = () => {
       this.initPlayer();
@@ -113,6 +119,7 @@ export class HomeComponent implements OnInit {
       this.player.disconnect();
     }
     this.spotifyButtonVisible = true;
+    this.spotifyPlayerVisible = false;
     this.userName = '';
     localStorage.removeItem(this.userName);
     this.router.navigate(['']);
@@ -149,6 +156,8 @@ export class HomeComponent implements OnInit {
   initPlayer() {
     if (this.token) {
       this.spotifyButtonVisible = false;
+      this.spotifyPlayerVisible = true;
+      this.getSongInfo();
       this.player = new Spotify.Player({
         name: 'MusicBit Player',
         getOAuthToken: cb => { cb(this.token); },
@@ -223,5 +232,19 @@ export class HomeComponent implements OnInit {
   onSliderChange(event : MatSliderChange) {
     console.log(event.value);
     this.desiredHeartRate = event.value!;
+  }
+
+  getSongInfo() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.token 
+      }),
+    };
+    this.http.get<any>("https://api.spotify.com/v1/me/player/currently-playing", httpOptions).subscribe(response => {
+      this.songArtist = response['item']['album']['artists'][0]['name'].toString();
+      this.songTitle = response['item']['album']['name'];
+      this.songImage = response['item']['album']['images'][0]['url'];
+    });
   }
 }
