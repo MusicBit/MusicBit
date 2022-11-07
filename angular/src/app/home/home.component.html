@@ -1,16 +1,15 @@
-<mat-toolbar>
-    <h1 class="title"> Welcome (User)!</h1>
+<mat-toolbar class="navBar">
+    <h1 class="title"> Welcome {{userName}}!</h1>
     <h1 class="mainHeader">MusicBit</h1>
+    <button class="spotifyButton" *ngIf="spotifyButtonVisible" mat-raised-button  (click)="onSpotifyLogin()">Log In with Spotify!</button>
+    <button class="logoutButton" mat-raised-button (click)="onLogout()">Log out!</button>
 </mat-toolbar>
 <div class="mainContainer">
-    
-    <div class="spotifyContainer">
-        <button class="spotifyButton" mat-raised-button  (click)="onSpotifyLogin()">Log In with Spotify!</button>
+    <mat-label class="bpmLabel">Desired BPM: {{desiredHeartRate}}</mat-label>
+    <mat-slider class="bpmSlider" min="60" max="200" thumbLabel tickInterval="1" (change)="onSliderChange($event)"></mat-slider>
+    <div class="heartrateContaienr">
         <button id="togglePlay" mat-raised-button (click)="playToggle()">Play</button>
+        <button id="togglePlay" mat-raised-button (click)="getHeartRate()">GetHeartRate</button>
+        <mat-label class="heartrateLabel">Heart Rate: {{heartRate}}</mat-label>
     </div>
-    <div class="heartrateContainer">
-
-    </div>
-
-    <button mat-flat-button color="accent" (click)="onLogout()">Log out!</button>
 </div>
