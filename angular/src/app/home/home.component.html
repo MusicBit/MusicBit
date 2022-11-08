@@ -9,7 +9,6 @@
     <mat-label class="bpmLabel">Desired BPM: {{desiredHeartRate}}</mat-label>
     <mat-slider class="bpmSlider" min="60" max="200" thumbLabel tickInterval="1" (change)="onSliderChange($event)"></mat-slider>
     <div class="heartrateContaienr">
-        <button id="togglePlay" mat-raised-button (click)="playToggle()">Play</button>
         <button id="togglePlay" mat-raised-button (click)="getHeartRate()">GetHeartRate</button>
         <mat-label class="heartrateLabel">Heart Rate: {{heartRate}}</mat-label>
     </div>
@@ -18,5 +17,14 @@
         <h2 class="songTitle">Title: {{songTitle}} </h2>
         <h2 class="songArtist">Artist: {{songArtist}} </h2>
         <img src ='{{songImage}}' class="songImage">
+        <button class="playButton" id="togglePlay" mat-icon-button (click)="playToggle()">
+            <mat-icon>{{icon}}</mat-icon>
+        </button>
+        <button class="skipButton" mat-icon-button (click)="skipToggle()">
+            <mat-icon>skip_next</mat-icon>
+        </button>
+        <button class="prevButton" mat-icon-button (click)="prevToggle()">
+            <mat-icon>skip_previous</mat-icon>
+        </button>
     </div>
 </div>

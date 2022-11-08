@@ -88,7 +88,7 @@
 }
 .songArtist {
     position: absolute;
-    top: 120px;
+    top: 110px;
     left: 180px;
 }
 
@@ -98,4 +98,20 @@
     height: 150px;
     left: 10px;
     top: 20px;
+}
+
+.playButton {
+    position: absolute;
+    top: 150px;
+    left: 165px;
+}
+.skipButton {
+    position: absolute;
+    top: 150px;
+    left: 225px;
+}
+.prevButton {
+    position: absolute;
+    top: 150px;
+    left: 195px;
 }

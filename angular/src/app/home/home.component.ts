@@ -40,7 +40,8 @@ export class HomeComponent implements OnInit {
   desiredHeartRate = 0;
   songTitle = '';
   songArtist = '';
-  songImage = ''
+  songImage = '';
+  icon= 'play_circle_filled';
 
 
   constructor(private router: Router, private http: HttpClient, private common: CommonService) {
@@ -70,9 +71,9 @@ export class HomeComponent implements OnInit {
     // ------ testing purposes REMOVE BEFORE FINAL ---
     console.log(this.token);
 
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      this.initPlayer();
-    };
+    // window.onSpotifyWebPlaybackSDKReady = () => {
+    //   this.initPlayer();
+    // };
   }
 
   async getHeartRate() {
@@ -198,8 +199,29 @@ export class HomeComponent implements OnInit {
   }
 
   playToggle() {
+    
     console.log("toggle");
     this.player.togglePlay();
+    this.player.getCurrentState().then((state : any) => {
+      if(state['paused'] == true) {
+        this.icon = "pause_circle_filled";
+      }
+      else {
+        this.icon = "play_circle_filled";
+      }
+    });
+  }
+
+  skipToggle() {
+    this.getSongInfo();
+    this.player.nextTrack();
+    
+  }
+
+  prevToggle() {
+    this.getSongInfo();
+    this.player.previousTrack();
+    
   }
 
   activateDevice() {
