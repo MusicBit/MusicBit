@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import SpotifyWebApi from 'spotify-web-api-js';
-import fetch from 'node-fetch'
-import * as qs from 'qs';
+
 
 // Currently some code/comments floating around that can be removed
 // after finalizing service
