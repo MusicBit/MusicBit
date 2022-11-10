@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
   songImage = '';
   icon= 'play_circle_filled';
   songFlag = false;
+  //id = 0;
 
 
   constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService) {
@@ -76,6 +77,10 @@ export class HomeComponent implements OnInit {
     // window.onSpotifyWebPlaybackSDKReady = () => {
     //   this.initPlayer();
     // };
+  }
+
+  ngOnDestroy() {
+    //clearInterval(this.id);
   }
 
   async getHeartRate() {
@@ -280,7 +285,7 @@ export class HomeComponent implements OnInit {
 
   async getSongRecommendation(token: String, bpm: Number) {
     //Set interval on this function
-
+    this.songrec.setToken(token.toString());
     //check time remaining
     let timeRemaining: Number = await this.songrec.nextCheck();
     if(timeRemaining <= 60000 && this.songFlag == false) {

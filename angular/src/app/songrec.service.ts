@@ -56,7 +56,7 @@ export class SongrecService {
 
   }
   async getRecommendation(token: string, bpm: number) {
-    var seedID;
+    var seedID = [];
     if (blackList.length == 0) {
       var topSongs = await this.getTopTracks(token);
       console.log(topSongs);
@@ -66,13 +66,13 @@ export class SongrecService {
       var topLength = topSongs.total;
       let randTopSong = tSongs[Math.floor(Math.random() * topLength)];
       console.log("Chosen seed: " + randTopSong.name + 'by' + randTopSong.artists[0].name);
-      let seedID = randTopSong.id;
+      seedID.push(randTopSong.id);
     }
     if (blackList.length > 0 && blackList.length < 6) {
-      let seedID = blackList.slice();
+      seedID = blackList.slice();
     }
     if (blackList.length >= 6) {
-      let seedID = [];
+      seedID = [];
       seedID.push(blackList[blackList.length - 1]);
       seedID.push(blackList[blackList.length - 2]);
       seedID.push(blackList[blackList.length - 3]);
@@ -161,7 +161,9 @@ export class SongrecService {
     let result = await spotify.queue(tarSong.URI, { device_id: device });
   }
 
-
+  setToken(token: string) {
+    spotify.setAccessToken(token);
+  }
 
 
 }
