@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { CommonService } from '../common.service';
+import { SongrecService } from '../songrec.service';
 import * as qs from "qs";
 import fetch from 'node-fetch';
 import { MatSliderChange } from '@angular/material/slider';
@@ -42,9 +43,10 @@ export class HomeComponent implements OnInit {
   songArtist = '';
   songImage = '';
   icon= 'play_circle_filled';
+  songFlag = false;
 
 
-  constructor(private router: Router, private http: HttpClient, private common: CommonService) {
+  constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService) {
     if(localStorage.getItem("userName") == null) { 
       this.userName = this.router.getCurrentNavigation()?.extras?.state?.['userName'];
       //USERNAME IS UNDEFINED FOR SOME LOGINS ON DIFFERENT MACHINES
@@ -106,6 +108,12 @@ export class HomeComponent implements OnInit {
           }
 
           this.heartRate = result['activities-heart-intraday'].dataset[result['activities-heart-intraday'].dataset.length -1].value;
+          
+          setInterval(() => {
+            this.getSongRecommendation(this.token,this.heartRate);
+          }, 20000);
+          
+
         } catch (error) {
           console.log(error);
         }
@@ -151,6 +159,8 @@ export class HomeComponent implements OnInit {
         this.initPlayer();
       });
     }
+
+
 
   }
 
@@ -213,15 +223,13 @@ export class HomeComponent implements OnInit {
   }
 
   skipToggle() {
-    this.getSongInfo();
     this.player.nextTrack();
-    
+    this.getSongInfo();
   }
 
   prevToggle() {
-    this.getSongInfo();
     this.player.previousTrack();
-    
+    this.getSongInfo();
   }
 
   activateDevice() {
@@ -265,8 +273,26 @@ export class HomeComponent implements OnInit {
     };
     this.http.get<any>("https://api.spotify.com/v1/me/player/currently-playing", httpOptions).subscribe(response => {
       this.songArtist = response['item']['album']['artists'][0]['name'].toString();
-      this.songTitle = response['item']['album']['name'];
+      this.songTitle = response['item']['name'];
       this.songImage = response['item']['album']['images'][0]['url'];
     });
   }
+
+  async getSongRecommendation(token: String, bpm: Number) {
+    //Set interval on this function
+
+    //check time remaining
+    let timeRemaining: Number = await this.songrec.nextCheck();
+    if(timeRemaining <= 60000 && this.songFlag == false) {
+      this.songFlag = true;
+      console.log(this.heartRate);
+      this.songrec.qNextSong(await this.songrec.getRecommendation(token.toString(),bpm.valueOf()),this.deviceID.toString());
+
+    }
+    if(timeRemaining > 60000) {
+      this.songFlag = false;
+    }
+
+  }
+
 }
