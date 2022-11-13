@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import SpotifyWebApi from 'spotify-web-api-js';
 
+// Song Recommendation Algorithm written by Carson Smith
 
 // Currently some code/comments floating around that can be removed
 // after finalizing service
@@ -48,14 +49,7 @@ export class SongrecService {
 
     //This might need to change, given usage of library
     let req = `{Authorization: \'Bearer \' ${token}, Content-Type: application/json, time_range: \'medium-term\', limit: 50}`
-    return await spotify.getMyTopTracks(JSON.stringify(req), function (err, data) {
-      console.log("HIT <<<");
-      if (err) { console.log("ERROR");console.error(err); return null }
-      else {
-        console.log("test: "+ data);  
-        return null;
-      }
-    });
+    return await spotify.getMyTopTracks(JSON.stringify(req));
   }
 
   async getRec(seedID: string[], bpm: number) {
@@ -167,6 +161,4 @@ export class SongrecService {
   setToken(token: string) {
     spotify.setAccessToken(token);
   }
-
-
 }

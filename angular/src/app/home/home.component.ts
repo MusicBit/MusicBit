@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
 
 
   constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService) {
-    if(localStorage.getItem("userName") == null) { 
+    if(!localStorage.getItem("userName")) { 
       this.userName = this.router.getCurrentNavigation()?.extras?.state?.['userName'];
       //USERNAME IS UNDEFINED FOR SOME LOGINS ON DIFFERENT MACHINES
       localStorage.setItem("userName", this.userName);
@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.userName);
     if(localStorage.getItem("userName") != null) {
       let user = localStorage.getItem("userName");
       console.log(user);
@@ -172,8 +173,6 @@ export class HomeComponent implements OnInit {
   initPlayer() {
     if (this.token) {
       this.spotifyButtonVisible = false;
-      this.spotifyPlayerVisible = true;
-      this.getSongInfo();
       this.player = new Spotify.Player({
         name: 'MusicBit Player',
         getOAuthToken: cb => { cb(this.token); },
@@ -185,6 +184,7 @@ export class HomeComponent implements OnInit {
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
         this.deviceID = device_id;
+        this.getSongInfo();
         this.activateDevice();
       });
 
@@ -228,23 +228,27 @@ export class HomeComponent implements OnInit {
   }
 
   skipToggle() {
-    this.player.nextTrack();
-    this.getSongInfo();
+    this.player.nextTrack().then(() => {
+      this.getSongInfo();
+    });
   }
 
   prevToggle() {
-    this.player.previousTrack();
-    this.getSongInfo();
+    this.player.previousTrack().then(() => {
+      this.getSongInfo();
+    });
   }
 
   activateDevice() {
+    this.spotifyPlayerVisible = true;
     const httpOptions = {
       headers: new HttpHeaders({
         //'Content-Type':  'application/json',
         'Authorization': 'Bearer ' + this.token 
       }),
     };
-    this.http.put("https://api.spotify.com/v1/me/player", qs.stringify({device_ids: [`"${this.deviceID}"`], play: true}), httpOptions).subscribe();
+    console.log(this.deviceID);
+    this.http.put("https://api.spotify.com/v1/me/player", JSON.stringify({device_ids: [`${this.deviceID}`], play: true}), httpOptions).subscribe();
   }
 
   getToken() {
