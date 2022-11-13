@@ -9,7 +9,7 @@ import { SongrecService } from '../songrec.service';
 import * as qs from "qs";
 import fetch from 'node-fetch';
 import { MatSliderChange } from '@angular/material/slider';
-import { timeout } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 type HeartRate = {
   time: string;
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
   useHeartbeat = false;
 
 
-  constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService) {
+  constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService, private cRef: ChangeDetectorRef) {
     if(!localStorage.getItem("userName")) { 
       this.userName = this.router.getCurrentNavigation()?.extras?.state?.['userName'];
       //USERNAME IS UNDEFINED FOR SOME LOGINS ON DIFFERENT MACHINES
@@ -290,7 +290,7 @@ export class HomeComponent implements OnInit {
       this.songArtist = response['item']['album']['artists'][0]['name'].toString();
       this.songTitle = response['item']['name'];
       this.songImage = response['item']['album']['images'][0]['url'];
-      console.log(this.songTitle);
+      this.cRef.detectChanges();
     });
   }
 
