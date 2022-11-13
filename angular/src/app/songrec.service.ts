@@ -49,12 +49,19 @@ export class SongrecService {
     //This might need to change, given usage of library
     let req = `{Authorization: \'Bearer \' ${token}, Content-Type: application/json, time_range: \'medium-term\', limit: 50}`
     return await spotify.getMyTopTracks(JSON.stringify(req), function (err, data) {
-      if (err) { console.error(err); return null }
-      else return data;
+      console.log("HIT <<<");
+      if (err) { console.log("ERROR");console.error(err); return null }
+      else {
+        console.log("test: "+ data);  
+        return null;
+      }
     });
-    spotify.getMyTopTracks({})
-
   }
+
+  async getRec(seedID: string[], bpm: number) {
+    return await spotify.getRecommendations({ seed_tracks: seedID, limit: 20, target_tempo: bpm });
+  }
+  
   async getRecommendation(token: string, bpm: number) {
     var seedID = [];
     if (blackList.length == 0) {
@@ -63,7 +70,7 @@ export class SongrecService {
       //var tSongs = topSongs.then(function (data) { return data.items });
       //var topLength = topSongs.then(function (data) { return data.total });
       var tSongs = topSongs.items;
-      var topLength = topSongs.total;
+      var topLength = 19;
       let randTopSong = tSongs[Math.floor(Math.random() * topLength)];
       console.log("Chosen seed: " + randTopSong.name + 'by' + randTopSong.artists[0].name);
       seedID.push(randTopSong.id);
@@ -80,19 +87,15 @@ export class SongrecService {
       seedID.push(blackList[blackList.length - 5]);
     }
     let rec = `{seed_tracks: ${seedID}, limit: 20, target_tempo: ${bpm}}`;
-    let recommendationsResponse = await spotify.getRecommendations({ seed_tracks: seedID, limit: 20, target_tempo: bpm }, function (err, data) {
-      if (err) { console.error(err); return null; }
-      else return data;
-    });
+    let recommendationsResponse = await this.getRec(seedID, bpm);
+    
+    console.log("data: " + recommendationsResponse);
     let recommendations = recommendationsResponse.tracks;
     let recIDs = [];
     for (let i = 0; i < 20; i++) {
       recIDs.push(recommendations[i].id);
     }
-    let songInfo = await spotify.getAudioFeaturesForTracks(recIDs, function (err, data) {
-      if (err) { console.error(err); return null; }
-      else return data;
-    });
+    let songInfo = await spotify.getAudioFeaturesForTracks(recIDs);
     let songList: Song[] = []
     for (let k = 0; k < 20; k++) {
       let flag = true;
