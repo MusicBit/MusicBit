@@ -10,6 +10,7 @@ import * as qs from "qs";
 import fetch from 'node-fetch';
 import { MatSliderChange } from '@angular/material/slider';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 type HeartRate = {
   time: string;
@@ -47,6 +48,7 @@ export class HomeComponent implements OnInit {
   songFlag = false;
   intervalID = 0;
   useHeartbeat = false;
+  toggleText = "SliderBPM";
 
 
   constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService, private cRef: ChangeDetectorRef) {
@@ -83,7 +85,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    //clearInterval(this.id);
+    
   }
 
   async getHeartRate() {
@@ -276,6 +278,22 @@ export class HomeComponent implements OnInit {
   onSliderChange(event : MatSliderChange) {
     console.log(event.value);
     this.desiredHeartRate = event.value!;
+  }
+
+  onVolumeChange(event : MatSliderChange) {
+    this.player.setVolume(event.value!);
+  }
+
+  //toggle text change
+  onToggleChange(event: MatSlideToggleChange) {
+    if(event.checked) {
+      this.toggleText = "Heartbeat"
+      this.useHeartbeat = true;
+    }
+    else {
+      this.toggleText = "SliderBPM"
+      this.useHeartbeat = false;
+    }
   }
 
   getSongInfo() {

@@ -64,6 +64,13 @@
     left: 870px;
 }
 
+.heartBeatToggle {
+    position: absolute;
+    top: 150px;
+    left: 400px;
+    font-size: 20px;
+}
+
 .spotifyPlayer {
     background-color: darkslategrey;
     width: 400px;
@@ -85,11 +92,13 @@
     position: absolute;
     top: 40px;
     left: 180px;
+    font-size: 14px;
 }
 .songArtist {
     position: absolute;
-    top: 110px;
+    top: 130px;
     left: 180px;
+    font-size: 14px;
 }
 
 .songImage {
@@ -114,4 +123,9 @@
     position: absolute;
     top: 150px;
     left: 195px;
+}
+.volumeSlider {
+    position: absolute;
+    top: 150px;
+    left: 260px;
 }
