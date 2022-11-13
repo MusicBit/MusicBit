@@ -52,7 +52,7 @@ export class SongrecService {
     return await spotify.getMyTopTracks(JSON.stringify(req));
   }
 
-  async getRec(seedID: string[], bpm: number) {
+  async getRec(seedID: string, bpm: number) {
     return await spotify.getRecommendations({ seed_tracks: seedID, limit: 20, target_tempo: bpm });
   }
   
@@ -81,7 +81,8 @@ export class SongrecService {
       seedID.push(blackList[blackList.length - 5]);
     }
     let rec = `{seed_tracks: ${seedID}, limit: 20, target_tempo: ${bpm}}`;
-    let recommendationsResponse = await this.getRec(seedID, bpm);
+    let recommendationsResponse = await this.getRec(this.seedString(seedID), bpm);
+    recommendationsResponse.seeds[0].id;
     
     console.log("data: " + recommendationsResponse);
     let recommendations = recommendationsResponse.tracks;
@@ -160,5 +161,13 @@ export class SongrecService {
 
   setToken(token: string) {
     spotify.setAccessToken(token);
+  }
+
+  seedString(seedID: string[]) {
+    let seedString = '';
+    for (let i = 0; i < seedID.length; i++) {
+      seedString.concat(seedID[i], ',');
+    }
+    return seedString;
   }
 }
