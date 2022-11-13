@@ -49,21 +49,11 @@ export class HomeComponent implements OnInit {
   useHeartbeat = false;
 
 
-  constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService, private cRef: ChangeDetectorRef) {
-    if(!localStorage.getItem("userName")) { 
-      this.userName = this.router.getCurrentNavigation()?.extras?.state?.['userName'];
-      //USERNAME IS UNDEFINED FOR SOME LOGINS ON DIFFERENT MACHINES
-      localStorage.setItem("userName", this.userName);
-    }
-  }
+  constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService, private cRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.userName = this.getCookie("user=");
     console.log(this.userName);
-    if(localStorage.getItem("userName") != null) {
-      let user = localStorage.getItem("userName");
-      console.log(user);
-      this.userName = user?.toString()!;
-    }
     
     const urlSearchParams = new URLSearchParams(window.location.search);
     let code = urlSearchParams.get("code");
@@ -73,7 +63,7 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.token = this.getToken();
+    this.token = this.getCookie("sp_tok=");
     // ------ testing purposes REMOVE BEFORE FINAL ---
     console.log(this.token);
 
@@ -256,8 +246,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getToken() {
-    let name = "sp_tok=";
+  getCookie(name: string) {
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
     for(let i = 0; i <ca.length; i++) {
