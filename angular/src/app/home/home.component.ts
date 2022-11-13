@@ -11,6 +11,7 @@ import fetch from 'node-fetch';
 import { MatSliderChange } from '@angular/material/slider';
 import { ChangeDetectorRef } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { setupTestingRouterInternal } from '@angular/router/testing';
 
 type HeartRate = {
   time: string;
@@ -48,6 +49,7 @@ export class HomeComponent implements OnInit {
   songFlag = false;
   recInt = 0;
   infoInt = 0;
+  rateInt = 0;
   useHeartbeat = false;
   toggleText = "SliderBPM";
 
@@ -80,6 +82,7 @@ export class HomeComponent implements OnInit {
   }
 
   async getHeartRate() {
+    console.log("CHECKING");
     let client_id = '';
     let access_token = '';
     let userId = '';
@@ -282,10 +285,15 @@ export class HomeComponent implements OnInit {
     if(event.checked) {
       this.toggleText = "Heartbeat"
       this.useHeartbeat = true;
+      this.getHeartRate();
+      this.rateInt = window.setInterval(() => {
+        this.getHeartRate();
+      }, 30000)
     }
     else {
       this.toggleText = "SliderBPM"
       this.useHeartbeat = false;
+      window.clearInterval(this.rateInt);
     }
   }
 

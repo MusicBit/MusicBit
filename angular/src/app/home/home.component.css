@@ -77,7 +77,7 @@
     height: 200px;
     position: absolute;
     top: 300px;
-    left: 200px;
+    left: 750px;
     border-radius: 25px;
 }
 
@@ -86,7 +86,7 @@
     font-size: 30px;
     position: absolute;
     top: -30px;
-    left: 70px;
+    left: 60px;
 }
 .songTitle {
     position: absolute;
