@@ -9,6 +9,7 @@ import { SongrecService } from '../songrec.service';
 import * as qs from "qs";
 import fetch from 'node-fetch';
 import { MatSliderChange } from '@angular/material/slider';
+import { timeout } from 'rxjs';
 
 type HeartRate = {
   time: string;
@@ -38,13 +39,14 @@ export class HomeComponent implements OnInit {
   spotifyPlayerVisible = false;
   heartRate = 0;
   userName = '';
-  desiredHeartRate = 0;
+  desiredHeartRate = 90;
   songTitle = '';
   songArtist = '';
   songImage = '';
   icon= 'play_circle_filled';
   songFlag = false;
-  //id = 0;
+  intervalID = 0;
+  useHeartbeat = false;
 
 
   constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService) {
@@ -113,13 +115,7 @@ export class HomeComponent implements OnInit {
             activityIntraday: GetUserResponse;
           }
 
-          this.heartRate = result['activities-heart-intraday'].dataset[result['activities-heart-intraday'].dataset.length -1].value;
-          
-          setInterval(() => {
-            this.getSongRecommendation(this.token,this.heartRate);
-          }, 20000);
-          
-
+          this.heartRate = result['activities-heart-intraday'].dataset[result['activities-heart-intraday'].dataset.length -1].value;       
         } catch (error) {
           console.log(error);
         }
@@ -184,7 +180,6 @@ export class HomeComponent implements OnInit {
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
         this.deviceID = device_id;
-        this.getSongInfo();
         this.activateDevice();
       });
 
@@ -229,18 +224,17 @@ export class HomeComponent implements OnInit {
 
   skipToggle() {
     this.player.nextTrack().then(() => {
-      this.getSongInfo();
+      setTimeout(() => this.getSongInfo(), 1000)
     });
   }
 
   prevToggle() {
     this.player.previousTrack().then(() => {
-      this.getSongInfo();
+      setTimeout(() => this.getSongInfo(), 1000)
     });
   }
 
   activateDevice() {
-    this.spotifyPlayerVisible = true;
     const httpOptions = {
       headers: new HttpHeaders({
         //'Content-Type':  'application/json',
@@ -248,7 +242,18 @@ export class HomeComponent implements OnInit {
       }),
     };
     console.log(this.deviceID);
-    this.http.put("https://api.spotify.com/v1/me/player", JSON.stringify({device_ids: [`${this.deviceID}`], play: true}), httpOptions).subscribe();
+    this.http.put("https://api.spotify.com/v1/me/player", JSON.stringify({device_ids: [`${this.deviceID}`], play: true}), httpOptions).subscribe(() => {
+      this.spotifyPlayerVisible = true;
+      setTimeout(() => this.getSongInfo(), 1000)
+
+      setInterval(() => {
+        this.getSongRecommendation();
+      }, 20000);
+
+      setInterval(() => {
+        this.getSongInfo();
+      }, 5000);
+    });
   }
 
   getToken() {
@@ -274,6 +279,7 @@ export class HomeComponent implements OnInit {
   }
 
   getSongInfo() {
+    console.log("Getting song info");
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -284,24 +290,29 @@ export class HomeComponent implements OnInit {
       this.songArtist = response['item']['album']['artists'][0]['name'].toString();
       this.songTitle = response['item']['name'];
       this.songImage = response['item']['album']['images'][0]['url'];
+      console.log(this.songTitle);
     });
   }
 
-  async getSongRecommendation(token: String, bpm: Number) {
+  async getSongRecommendation() {
+    let bpm = 0;
+    if (this.useHeartbeat)
+      bpm = this.heartRate;
+    else
+      bpm = this.desiredHeartRate;
     //Set interval on this function
-    this.songrec.setToken(token.toString());
+    this.songrec.setToken(this.token.toString());
     //check time remaining
     let timeRemaining: Number = await this.songrec.nextCheck();
     if(timeRemaining <= 60000 && this.songFlag == false) {
       this.songFlag = true;
       console.log(this.heartRate);
-      this.songrec.qNextSong(await this.songrec.getRecommendation(token.toString(),bpm.valueOf()),this.deviceID.toString());
+      this.songrec.qNextSong(await this.songrec.getRecommendation(this.token.toString(),bpm.valueOf()),this.deviceID.toString());
 
     }
     if(timeRemaining > 60000) {
       this.songFlag = false;
-    }
-
+      }
   }
 
 }

@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
       if (responce[0] == "Login Successful.") { //good login
         let token = responce[1];
         document.cookie = "token=" + token;
+        document.cookie = "user=" + formData.username;
 
         //syntax for using validateLogin, put login protected script or function call within the callback arrow funciton
         this.common.validateLogin((id: string) => {
