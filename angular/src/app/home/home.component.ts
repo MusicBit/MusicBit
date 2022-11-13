@@ -10,6 +10,8 @@ import * as qs from "qs";
 import fetch from 'node-fetch';
 import { MatSliderChange } from '@angular/material/slider';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { setupTestingRouterInternal } from '@angular/router/testing';
 
 type HeartRate = {
   time: string;
@@ -45,8 +47,11 @@ export class HomeComponent implements OnInit {
   songImage = '';
   icon= 'play_circle_filled';
   songFlag = false;
-  intervalID = 0;
+  recInt = 0;
+  infoInt = 0;
+  rateInt = 0;
   useHeartbeat = false;
+  toggleText = "SliderBPM";
 
 
   constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService, private cRef: ChangeDetectorRef) {}
@@ -73,10 +78,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    //clearInterval(this.id);
+    this.onLogout();
   }
 
   async getHeartRate() {
+    console.log("CHECKING");
     let client_id = '';
     let access_token = '';
     let userId = '';
@@ -122,7 +128,10 @@ export class HomeComponent implements OnInit {
     this.spotifyButtonVisible = true;
     this.spotifyPlayerVisible = false;
     this.userName = '';
-    localStorage.removeItem(this.userName);
+    window.clearInterval(this.recInt);
+    window.clearInterval(this.infoInt);
+    //clear cookies from https://stackoverflow.com/a/27374365
+    document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
     this.router.navigate(['']);
   }
 
@@ -236,11 +245,11 @@ export class HomeComponent implements OnInit {
       this.spotifyPlayerVisible = true;
       setTimeout(() => this.getSongInfo(), 1000)
 
-      setInterval(() => {
+      this.recInt = window.setInterval(() => {
         this.getSongRecommendation();
       }, 20000);
 
-      setInterval(() => {
+      this.infoInt = window.setInterval(() => {
         this.getSongInfo();
       }, 5000);
     });
@@ -265,6 +274,27 @@ export class HomeComponent implements OnInit {
   onSliderChange(event : MatSliderChange) {
     console.log(event.value);
     this.desiredHeartRate = event.value!;
+  }
+
+  onVolumeChange(event : MatSliderChange) {
+    this.player.setVolume(event.value!);
+  }
+
+  //toggle text change
+  onToggleChange(event: MatSlideToggleChange) {
+    if(event.checked) {
+      this.toggleText = "Heartbeat"
+      this.useHeartbeat = true;
+      this.getHeartRate();
+      this.rateInt = window.setInterval(() => {
+        this.getHeartRate();
+      }, 30000)
+    }
+    else {
+      this.toggleText = "SliderBPM"
+      this.useHeartbeat = false;
+      window.clearInterval(this.rateInt);
+    }
   }
 
   getSongInfo() {
