@@ -27,7 +27,7 @@ type GetUserResponse = {
 })
 export class HomeComponent implements OnInit {
 
-  clientID = "611286f87c6a497aa03880a782ffc282";
+  clientID = "3c542655555f446f87ef90a99dae6d02";
   spotifyAuthEndpoint = "https://accounts.spotify.com/authorize/";
   redirectURL = window.location.href;
   scopes = "streaming%20user-modify-playback-state%20user-read-email%20user-read-private%20user-top-read%20user-read-currently-playing%20user-read-playback-state";
@@ -155,7 +155,7 @@ export class HomeComponent implements OnInit {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/x-www-form-urlencoded',
-          'Authorization': 'Basic NjExMjg2Zjg3YzZhNDk3YWEwMzg4MGE3ODJmZmMyODI6ZTkyNmZjYmU4NzYwNDMzMGE3YmUyMzNhNGQzY2NkY2Q=' //encoded client id and secret
+          'Authorization': 'Basic M2M1NDI2NTU1NTVmNDQ2Zjg3ZWY5MGE5OWRhZTZkMDI6ODkxMGY0NTZjMmNlNDU4NWIxOTliYzc5MzRlZDEyMTA=' //encoded client id and secret
         }),
       };
       this.http.post<any>("https://accounts.spotify.com/api/token", qs.stringify({grant_type: 'authorization_code', code: payload, redirect_uri: this.redirectURL}), httpOptions).subscribe(data => {
