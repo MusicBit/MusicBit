@@ -52,10 +52,10 @@ export class SongrecService {
     return await spotify.getMyTopTracks(JSON.stringify(req));
   }
 
-  async getRec(seedID: string, bpm: number) {
-    return await spotify.getRecommendations({ seed_tracks: seedID, limit: 20, target_tempo: bpm });
+  async getRec(seedID: string[], bpm: number) {
+    return await spotify.getRecommendations({ seed_tracks: seedID as string[], limit: 20, target_tempo: bpm });
   }
-  
+
   async getRecommendation(token: string, bpm: number) {
     var seedID = [];
     if (blackList.length == 0) {
@@ -70,7 +70,7 @@ export class SongrecService {
       seedID.push(randTopSong.id);
     }
     if (blackList.length > 0 && blackList.length < 6) {
-      seedID = blackList.slice();
+      seedID = blackList.slice(0,blackList.length);
     }
     if (blackList.length >= 6) {
       seedID = [];
@@ -80,10 +80,9 @@ export class SongrecService {
       seedID.push(blackList[blackList.length - 4]);
       seedID.push(blackList[blackList.length - 5]);
     }
-    let rec = `{seed_tracks: ${seedID}, limit: 20, target_tempo: ${bpm}}`;
-    let recommendationsResponse = await this.getRec(this.seedString(seedID), bpm);
+    let recommendationsResponse = await this.getRec(seedID, bpm);
     recommendationsResponse.seeds[0].id;
-    
+
     console.log("data: " + recommendationsResponse);
     let recommendations = recommendationsResponse.tracks;
     let recIDs = [];
@@ -107,9 +106,10 @@ export class SongrecService {
           if (curID == blackList[z]) {
             flag = false;
           }
-          if (flag) {
-            songList.push({ Name: curName, Artist: curArtist, ID: curID, BPM: curBPM, URI: curURI });
-          }
+
+        }
+        if (flag) {
+          songList.push({ Name: curName, Artist: curArtist, ID: curID, BPM: curBPM, URI: curURI });
         }
       }
     }
