@@ -114,6 +114,7 @@ export class HomeComponent implements OnInit {
           //console.log(error);
           alert("Error retrieving FitBit data.");
           this.useHeartbeat = false;
+          window.clearInterval(this.rateInt);
           this.cRef.detectChanges();
         }
       });
