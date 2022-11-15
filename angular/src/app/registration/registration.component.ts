@@ -30,7 +30,7 @@ export class RegistrationComponent implements OnInit {
       return;
     }
     const formData = this.registerForm.value;
-    console.log(formData);
+    //console.log(formData);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -40,7 +40,7 @@ export class RegistrationComponent implements OnInit {
     };
 
     this.http.post("https://www.musicbit.net/register.php", JSON.stringify({action: "register", fname: formData.firstName, lname: formData.lastName, user: formData.username, pass: formData.password, fitbit_token: formData.fitbitToken}), httpOptions).subscribe(data => {
-      console.log(data);
+      //console.log(data);
     });
 
     this.router.navigate(['']);

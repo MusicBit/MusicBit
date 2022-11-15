@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     const formData = this.loginForm.value;
-    console.log(formData);
+    //console.log(formData);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -49,15 +49,16 @@ export class LoginComponent implements OnInit {
         //syntax for using validateLogin, put login protected script or function call within the callback arrow funciton
         this.common.validateLogin((id: string) => {
           if (id == '-1')
-            console.log("Failed to stay logged in.");
+            //console.log("Failed to stay logged in.");
+            alert("Failed to log in.");
           else {
-            console.log("Logged in user: " + id);
+            //console.log("Logged in user: " + id);
             this.router.navigate(["home"], {state : { userName : formData.username}});
           }
         });        
       }
-      else //login failed
-        console.log(data);
+      //else //login failed
+        //console.log(data);
     });
   }
 }

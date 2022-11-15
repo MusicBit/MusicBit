@@ -60,13 +60,13 @@ export class SongrecService {
     var seedID = [];
     if (blackList.length == 0) {
       var topSongs = await this.getTopTracks(token);
-      console.log(topSongs);
+      //console.log(topSongs);
       //var tSongs = topSongs.then(function (data) { return data.items });
       //var topLength = topSongs.then(function (data) { return data.total });
       var tSongs = topSongs.items;
       var topLength = 19;
       let randTopSong = tSongs[Math.floor(Math.random() * topLength)];
-      console.log("Chosen seed: " + randTopSong.name + 'by' + randTopSong.artists[0].name);
+      //console.log("Chosen seed: " + randTopSong.name + 'by' + randTopSong.artists[0].name);
       seedID.push(randTopSong.id);
     }
     if (blackList.length > 0 && blackList.length < 6) {
@@ -83,7 +83,7 @@ export class SongrecService {
     let recommendationsResponse = await this.getRec(seedID, bpm);
     recommendationsResponse.seeds[0].id;
 
-    console.log("data: " + recommendationsResponse);
+    //console.log("data: " + recommendationsResponse);
     let recommendations = recommendationsResponse.tracks;
     let recIDs = [];
     for (let i = 0; i < 20; i++) {
@@ -121,7 +121,7 @@ export class SongrecService {
         closestSong = j;
       }
     }
-    console.log('Closest song: ' + songList[closestSong] + " by " + songList[closestSong].Artist);
+    console.log('Closest song: ' + songList[closestSong].Name + " by " + songList[closestSong].Artist);
     console.log("      BPM: " + songList[closestSong].BPM);
     blackList.push(songList[closestSong].ID);
     return songList[closestSong];
@@ -141,7 +141,7 @@ export class SongrecService {
   }
 
   async nextCheck() {
-    console.log('Checking playback');
+    //console.log('Checking playback');
     let result = (await spotify.getMyCurrentPlaybackState());
     if (result.progress_ms == null) {
       return result.timestamp;

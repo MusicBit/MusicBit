@@ -7,7 +7,7 @@
 <div class="mainContainer">
     <mat-label class="bpmLabel">Desired BPM: {{desiredHeartRate}}</mat-label>
     <mat-slider class="bpmSlider" min="60" max="200" value="90" thumbLabel tickInterval="1" (change)="onSliderChange($event)"></mat-slider> 
-    <mat-slide-toggle class="heartBeatToggle" [(ngModel)]="useHeartbeat" (change)="onToggleChange($event)">{{toggleText}}</mat-slide-toggle>
+    <mat-slide-toggle [checked]="useHeartbeat" class="heartBeatToggle" [(ngModel)]="useHeartbeat" (change)="onToggleChange($event)">{{toggleText}}</mat-slide-toggle>
     <div class="heartrateContaienr">
         <mat-label class="heartrateLabel">Heart Rate: {{heartRate}}</mat-label>
     </div>

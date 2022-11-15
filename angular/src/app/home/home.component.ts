@@ -1,6 +1,6 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
@@ -10,8 +10,7 @@ import * as qs from "qs";
 import fetch from 'node-fetch';
 import { MatSliderChange } from '@angular/material/slider';
 import { ChangeDetectorRef } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { setupTestingRouterInternal } from '@angular/router/testing';
+import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 type HeartRate = {
   time: string;
@@ -55,10 +54,9 @@ export class HomeComponent implements OnInit {
 
 
   constructor(private router: Router, private http: HttpClient, private common: CommonService, private songrec: SongrecService, private cRef: ChangeDetectorRef) {}
-
   ngOnInit(): void {
     this.userName = this.getCookie("user=");
-    console.log(this.userName);
+    //console.log(this.userName);
     
     const urlSearchParams = new URLSearchParams(window.location.search);
     let code = urlSearchParams.get("code");
@@ -70,7 +68,7 @@ export class HomeComponent implements OnInit {
 
     this.token = this.getCookie("sp_tok=");
     // ------ testing purposes REMOVE BEFORE FINAL ---
-    console.log(this.token);
+    //console.log(this.token);
 
     // window.onSpotifyWebPlaybackSDKReady = () => {
     //   this.initPlayer();
@@ -82,7 +80,7 @@ export class HomeComponent implements OnInit {
   }
 
   async getHeartRate() {
-    console.log("CHECKING");
+    //console.log("CHECKING");
     let client_id = '';
     let access_token = '';
     let userId = '';
@@ -113,7 +111,10 @@ export class HomeComponent implements OnInit {
 
           this.heartRate = result['activities-heart-intraday'].dataset[result['activities-heart-intraday'].dataset.length -1].value;       
         } catch (error) {
-          console.log(error);
+          //console.log(error);
+          alert("Error retrieving FitBit data.");
+          this.useHeartbeat = false;
+          this.cRef.detectChanges();
         }
       });
     });
@@ -160,9 +161,6 @@ export class HomeComponent implements OnInit {
         this.initPlayer();
       });
     }
-
-
-
   }
 
   initPlayer() {
@@ -177,30 +175,33 @@ export class HomeComponent implements OnInit {
       let player = this.player;
       // Ready
       player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
+        //console.log('Ready with Device ID', device_id);
         this.deviceID = device_id;
         this.activateDevice();
       });
 
       // Not Ready
       player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
+        //console.log('Device ID has gone offline', device_id);
         this.deviceID = "-1";
       });
 
       player.addListener('initialization_error', ({ message }) => {
-        console.log("init_error");
-        console.error(message);
+        //console.log("init_error");
+        //console.error(message);
+        alert("Error initializing player.");
       });
 
       player.addListener('authentication_error', ({ message }) => {
-        console.log("auth_error");
-        console.error(message);
+        //console.log("auth_error");
+        //console.error(message);
+        alert("Authentication error.");
       });
 
       player.addListener('account_error', ({ message }) => {
-        console.log("acc_error");
-        console.error(message);
+        //console.log("acc_error");
+        //console.error(message);
+        alert("Spotify account error.");
       });
 
       player.connect();
@@ -208,8 +209,7 @@ export class HomeComponent implements OnInit {
   }
 
   playToggle() {
-    
-    console.log("toggle");
+    //console.log("toggle");
     this.player.togglePlay();
     this.player.getCurrentState().then((state : any) => {
       if(state['paused'] == true) {
@@ -240,7 +240,7 @@ export class HomeComponent implements OnInit {
         'Authorization': 'Bearer ' + this.token 
       }),
     };
-    console.log(this.deviceID);
+    //console.log(this.deviceID);
     this.http.put("https://api.spotify.com/v1/me/player", JSON.stringify({device_ids: [`${this.deviceID}`], play: true}), httpOptions).subscribe(() => {
       this.spotifyPlayerVisible = true;
       setTimeout(() => this.getSongInfo(), 1000)
@@ -272,7 +272,7 @@ export class HomeComponent implements OnInit {
 
   //desired heart rate value
   onSliderChange(event : MatSliderChange) {
-    console.log(event.value);
+    //console.log(event.value);
     this.desiredHeartRate = event.value!;
   }
 
@@ -298,7 +298,7 @@ export class HomeComponent implements OnInit {
   }
 
   getSongInfo() {
-    console.log("Getting song info");
+    //console.log("Getting song info");
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -325,7 +325,7 @@ export class HomeComponent implements OnInit {
     let timeRemaining: Number = await this.songrec.nextCheck();
     if(timeRemaining <= 60000 && this.songFlag == false) {
       this.songFlag = true;
-      console.log(this.heartRate);
+      //console.log(this.heartRate);
       this.songrec.qNextSong(await this.songrec.getRecommendation(this.token.toString(),bpm.valueOf()),this.deviceID.toString());
 
     }
