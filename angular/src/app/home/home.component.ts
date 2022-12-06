@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.userName = this.getCookie("user=");
     //console.log(this.userName);
-    
+
     const urlSearchParams = new URLSearchParams(window.location.search);
     let code = urlSearchParams.get("code");
     if (code) {
@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit {
               Authorization: 'Bearer ' + access_token,
             },
           });
-    
+
           if(!response.ok) {
             throw new Error();
           }
@@ -109,7 +109,7 @@ export class HomeComponent implements OnInit {
             activityIntraday: GetUserResponse;
           }
 
-          this.heartRate = result['activities-heart-intraday'].dataset[result['activities-heart-intraday'].dataset.length -1].value;       
+          this.heartRate = result['activities-heart-intraday'].dataset[result['activities-heart-intraday'].dataset.length -1].value;
         } catch (error) {
           //console.log(error);
           alert("Error retrieving FitBit data.");
@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit {
     (window as any).spotifyCallback = (payload: any) => {
       if (popup)
         popup.close()
-      
+
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/x-www-form-urlencoded',
@@ -223,7 +223,7 @@ export class HomeComponent implements OnInit {
   }
 
   skipToggle() {
-    this.player.nextTrack().then(() => {
+    this.skipSong().then(() => {
       setTimeout(() => this.getSongInfo(), 1000)
     });
   }
@@ -238,7 +238,7 @@ export class HomeComponent implements OnInit {
     const httpOptions = {
       headers: new HttpHeaders({
         //'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + this.token 
+        'Authorization': 'Bearer ' + this.token
       }),
     };
     //console.log(this.deviceID);
@@ -303,7 +303,7 @@ export class HomeComponent implements OnInit {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + this.token 
+        'Authorization': 'Bearer ' + this.token
       }),
     };
     this.http.get<any>("https://api.spotify.com/v1/me/player/currently-playing", httpOptions).subscribe(response => {
@@ -335,4 +335,14 @@ export class HomeComponent implements OnInit {
       }
   }
 
+  async skipSong(){
+    let bpm = 0;
+    if (this.useHeartbeat)
+      bpm = this.heartRate;
+    else
+      bpm = this.desiredHeartRate;
+    await this.songrec.qNextSong(await this.songrec.getRecommendation(this.token.toString(),bpm.valueOf()),this.deviceID.toString()).then(() => {
+      this.player.nextTrack();
+    });
+  }
 }

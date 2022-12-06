@@ -63,6 +63,9 @@ export class SongrecService {
       //console.log(topSongs);
       //var tSongs = topSongs.then(function (data) { return data.items });
       //var topLength = topSongs.then(function (data) { return data.total });
+      if (topSongs.total < 20 ){
+        alert("Error reading top tracks. User does not have enough top songs. Please listen to more music first via spotify.");
+      }
       var tSongs = topSongs.items;
       var topLength = 19;
       let randTopSong = tSongs[Math.floor(Math.random() * topLength)];
