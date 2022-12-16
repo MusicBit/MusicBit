@@ -1,15 +1,27 @@
 <mat-toolbar class="navBar">
     <h1 class="title"> Welcome {{userName}}!</h1>
     <h1 class="mainHeader">MusicBit</h1>
-    <button class="spotifyButton" *ngIf="spotifyButtonVisible" mat-raised-button  (click)="onSpotifyLogin()">Log In with Spotify!</button>
-    <button class="logoutButton" mat-raised-button (click)="onLogout()">Log out!</button>
+    <div class="buttonsHeader">
+      <div class="spotifyContainer">
+        <button class="spotifyButton" *ngIf="spotifyButtonVisible" mat-raised-button  (click)="onSpotifyLogin()">Log In with Spotify!</button>
+      </div>
+      <div class="logoutContainer">
+        <button class="logoutButton" mat-raised-button (click)="onLogout()">Log out!</button>
+      </div>
+    </div>
 </mat-toolbar>
 <div class="mainContainer">
-    <mat-label class="bpmLabel">Desired BPM: {{desiredHeartRate}}</mat-label>
-    <mat-slider class="bpmSlider" min="60" max="200" value="90" thumbLabel tickInterval="1" (change)="onSliderChange($event)"></mat-slider> 
-    <mat-slide-toggle [checked]="useHeartbeat" class="heartBeatToggle" [(ngModel)]="useHeartbeat" (change)="onToggleChange($event)">{{toggleText}}</mat-slide-toggle>
-    <div class="heartrateContaienr">
-        <mat-label class="heartrateLabel">Heart Rate: {{heartRate}}</mat-label>
+    <div>
+      <div class="sliderContainer">
+        <mat-slider  *ngIf="!useHeartbeat" class="bpmSlider" min="60" max="200" value="90" thumbLabel tickInterval="1" (change)="onSliderChange($event)"></mat-slider>
+      </div>
+      <div class="toggledLabelContainer">
+        <mat-slide-toggle [checked]="useHeartbeat" class="heartBeatToggle" [(ngModel)]="useHeartbeat" (change)="onToggleChange($event)">{{toggleText}}</mat-slide-toggle>
+        <div class="labelContainer">
+          <mat-label *ngIf="!useHeartbeat" class="bpmLabel">Desired BPM: {{desiredHeartRate}}</mat-label>
+          <mat-label *ngIf="heartRateNonzero || useHeartbeat" class="heartrateLabel">Heart Rate: {{heartRate}}</mat-label>
+        </div>
+      </div>
     </div>
     <div class="spotifyPlayer" *ngIf="spotifyPlayerVisible">
         <mat-label class="nowPlaying">Currently Playing!</mat-label>
@@ -28,3 +40,4 @@
         <mat-slider class="volumeSlider" min="0" max="1" value="0.5" thumbLabel step="0.1" (change)="onVolumeChange($event)"></mat-slider>
     </div>
 </div>
+

@@ -1,36 +1,62 @@
 .mainContainer {
     margin: auto;
-    width: 900px;
-    height: 900px;
-    display: flex;
+    width: 100%;
+    height: auto;
+    display: block;
     justify-content: center;
     align-items: center;
+    text-align: center;
+}
+
+.navBar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .title {
     color: white;
+    text-align: left;
+    width: 33%;
 }
 
 .mainHeader {
     text-align: center;
     position: relative;
-    padding: 650px;
     color: white;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 50px;
+    width: 33%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonsHeader {
+    width: 33%;
+    justify-content: right;
+    display: flex;
+}
+
+.spotifyContainer {
+    display: flex;
+    justify-content: center;
 }
 
 .spotifyButton {
-  background-color: green;
-  vertical-align: middle;
-  position:fixed;
-  right:100px;
+    background-color: green;
+    margin-right: 10px;
 }
+
+.logoutContainer {
+    display: flex;
+    justify-content: right;
+}
+
 .logoutButton {
-  background-color: red;
-  vertical-align: middle;
-  position: fixed;
-  right: 10px;
+    background-color: red;
 }
 
 .container {
@@ -44,88 +70,112 @@
     display:inline-block;
 }
 
-.bpmLabel {
-    color: black;
-    font-size: 30px;
-    position: absolute;
-    top: 150px;
+.sliderContainer {
+    display: flex;
+    justify-content: center;
+    height: 60px;
 }
 .bpmSlider {
     width: 300px;
     color: black;
-    position: absolute;
-    top: 100px;
+    margin: auto;
+}
+
+.toggledLabelContainer {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+.labelContainer {
+  display: flex;
+  margin: auto;
 }
 .heartrateLabel {
     color: black;
     font-size: 30px;
-    position: absolute;
-    top: 200px;
-    left: 870px;
+    margin: 20px;
+}
+.bpmLabel {
+  color: black;
+  font-size: 30px;
+  margin: 20px;
 }
 
 .heartBeatToggle {
-    position: absolute;
-    top: 150px;
-    left: 400px;
+    position: relative;
+    left: 0;
     font-size: 20px;
+    margin: 20px auto;
 }
 
+.spotifyCard {
+  display: block;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
 .spotifyPlayer {
     background-color: darkslategrey;
     width: 400px;
     height: 200px;
-    position: absolute;
-    top: 300px;
-    left: 750px;
     border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
 }
 
 .nowPlaying {
     color: black;
     font-size: 30px;
-    position: absolute;
-    top: -30px;
-    left: 60px;
+    position: relative;
+    width: 100%;
+    margin: 20px auto;
+}
+.songImage {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  top: 20px;
+  left: 20px;
+}
+
+.songInfo {
+  text-align: left;
 }
 .songTitle {
-    position: absolute;
-    top: 40px;
-    left: 180px;
+    position: relative;
     font-size: 14px;
+    left: 35px;
+    top: 10px;
 }
 .songArtist {
-    position: absolute;
-    top: 130px;
-    left: 180px;
+    position: relative;
     font-size: 14px;
+    left: 35px;
 }
 
-.songImage {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    left: 10px;
-    top: 20px;
-}
+.spotifyControls {
 
+}
 .playButton {
-    position: absolute;
-    top: 150px;
-    left: 165px;
-}
-.skipButton {
-    position: absolute;
-    top: 150px;
-    left: 225px;
+    position: relative;
+    left: 25px;
 }
 .prevButton {
-    position: absolute;
-    top: 150px;
-    left: 195px;
+    position: relative;
+    left: 20px;
+}
+.skipButton {
+  position: relative;
+  left: 5px;
 }
 .volumeSlider {
+    position: relative;
+}
+
+.aboutText {
     position: absolute;
-    top: 150px;
-    left: 260px;
+    bottom: 10px;
+    color: white;
+    margin: auto;
 }
