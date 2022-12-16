@@ -141,21 +141,25 @@
 
 .songInfo {
   text-align: left;
+  height: 100%;
+  display: block;
 }
 .songTitle {
     position: relative;
     font-size: 14px;
     left: 35px;
     top: 10px;
+    height: 25%;
 }
 .songArtist {
     position: relative;
     font-size: 14px;
     left: 35px;
+    height: 25%;
 }
 
 .spotifyControls {
-
+  height: 25%;
 }
 .playButton {
     position: relative;
